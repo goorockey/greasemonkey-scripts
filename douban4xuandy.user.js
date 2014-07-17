@@ -1,29 +1,30 @@
 // ==UserScript==
-// @name           douban4xuandy
-// @grant          GM_xmlhttpRequest
-// @description    douban score for www.xuandy.com movie
-// @include        http://www.xuandy.com/movie/*
-// author          kelvingu616@gmail.com
-// github          goorockey/douban4xuandy
+// @name        douban4xuandy
+// @grant       GM_xmlhttpRequest
+// @description douban score for www.xuandy.com movie
+// @include     http://www.xuandy.com/movie/*
+// @include     http://www.xuandy.com/television/*
+// @include     http://www.xuandy.com/video/*
+// author       kelvingu616@gmail.com
+// github       github.com/goorockey
 // ==/UserScript==
 
-
 var douban_search_url = 'https://api.douban.com/v2/movie/search?count=10&q=';
-var douban_movie_url = 'http://movie.douban.com/subject/'
+var douban_movie_url = 'http://movie.douban.com/subject/';
 
 var insertDoubanScore = function(douban_data) {
     if (douban_data === undefined) {
         return;
     }
-    
+
     var score = douban_data.rating.average;
     var link = douban_movie_url + douban_data.id;
-    
+
     var a = document.createElement('a');
     a.appendChild(document.createTextNode('豆瓣评分: ' + score));
     a.href = link;
     a.style.color = 'red';
-    
+
     document.getElementsByClassName('postmeat')[0].appendChild(a);
 };
 
@@ -31,7 +32,7 @@ var parseDoubanData = function (movie_name, data) {
     if (!data || !data.subjects) {
         return ;
     }
-    
+
     data = data.subjects;
     for (var i = 0; i < data.length; i++) {
         if (data[i].title === movie_name) {
