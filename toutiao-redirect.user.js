@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        toutiao-redirect
 // @description auto redirect to product url in toutiao.io
-// @include     http://toutiao.io/posts/
+// @include     http://toutiao.io/posts/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/toutiao-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/toutiao-redirect.user.js
 // @version     1.0
