@@ -5,6 +5,9 @@
 // @include     http://www.xuandy.com/movie/*
 // @include     http://www.xuandy.com/television/*
 // @include     http://www.xuandy.com/video/*
+// @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
+// @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
+// @version     1.0
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
 // ==/UserScript==
