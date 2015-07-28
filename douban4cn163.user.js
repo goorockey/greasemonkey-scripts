@@ -25,24 +25,26 @@ var insertDoubanScore = function(douban_data) {
     a.appendChild(document.createTextNode(' (豆瓣评分: ' + score + ')'));
     a.href = link;
     a.style.color = 'red';
+    a.style.textDecoration = 'underline';
 
     document.getElementsByClassName('entry_title')[0].appendChild(a);
 };
 
-var parseDoubanData = function (movie_name, data) {
+var parseDoubanData = function (movie_name, movie_season, data) {
     if (!data || !data.subjects) {
         return ;
     }
 
     data = data.subjects;
     for (var i = 0; i < data.length; i++) {
-        if (data[i].title === movie_name) {
+        if (data[i].title.indexOf(movie_name) === 0 &&
+            data[i].title.indexOf(movie_season) !== -1) {
             return data[i];
         }
     }
 };
 
-var getDoubanScore = function (movie_name, callback) {
+var getDoubanScore = function (movie_name, movie_season, callback) {
     GM_xmlhttpRequest({
         method: 'GET',
         headers: {
@@ -55,7 +57,7 @@ var getDoubanScore = function (movie_name, callback) {
             }
             try {
                 var data = JSON.parse(res.responseText);
-                return callback(parseDoubanData(movie_name, data));
+                return callback(parseDoubanData(movie_name, movie_season, data));
             } catch (e) {
                 console.log(e);
             }
@@ -63,15 +65,20 @@ var getDoubanScore = function (movie_name, callback) {
     });
 };
 
-var getMovieName = function () {
+var getMovie = function () {
     var title = document.getElementsByClassName('entry_title') [0].innerHTML;
-    var re = /(.*)第.+季节/; // 格式: 电影名第N季/XXXX
+    var re = /(.+)(第.+季)/; // 格式: 电影名第N季/XXXX
     var m = re.exec(title);
-    if (!m) {
-        return ;
+
+    if (m.length === 3) {
+      var name = m[1];
+      var season = m[2];
+      return [name, season];
     }
-    var movie_name = m[1];
-    return movie_name;
 };
 
-getDoubanScore(getMovieName(), insertDoubanScore);
+var movie = getMovie();
+if (movie) {
+  getDoubanScore(movie[0], movie[1], insertDoubanScore);
+}
+

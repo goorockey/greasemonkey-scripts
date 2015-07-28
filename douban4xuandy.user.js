@@ -7,7 +7,7 @@
 // @include     http://www.xuandy.com/video/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
-// @version     1.0
+// @version     1.1.0
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
 // ==/UserScript==
@@ -27,6 +27,7 @@ var insertDoubanScore = function(douban_data) {
     a.appendChild(document.createTextNode('豆瓣评分: ' + score));
     a.href = link;
     a.style.color = 'red';
+    a.style.textDecoration = 'underline';
 
     document.getElementsByClassName('postmeat')[0].appendChild(a);
 };
@@ -44,7 +45,14 @@ var parseDoubanData = function (movie_name, data) {
     }
 };
 
-var getDoubanScore = function (movie_name, callback) {
+var getDoubanScore = function (movie_names, callback) {
+  var index = 0;
+
+  var doGetDoubanScore = function(movie_name) {
+    if (index >= movie_names.length) {
+      return;
+    }
+
     GM_xmlhttpRequest({
         method: 'GET',
         headers: {
@@ -52,28 +60,31 @@ var getDoubanScore = function (movie_name, callback) {
         },
         url: douban_search_url + movie_name,
         onload: function (res) {
-            if (res.status !== 200) {
-                return ;
+            if (res.status === 200) {
+              try {
+                  var data = JSON.parse(res.responseText);
+                  return callback(parseDoubanData(movie_name, data));
+              } catch (e) {
+                  console.log(e);
+              }
             }
-            try {
-                var data = JSON.parse(res.responseText);
-                return callback(parseDoubanData(movie_name, data));
-            } catch (e) {
-                console.log(e);
-            }
+
+            doGetDoubanScore(movie_names[++index]);
         },
     });
+  }
+
+  doGetDoubanScore(movie_names[index]);
 };
 
 var getMovieName = function () {
     var title = document.getElementsByClassName('post') [0].childNodes[1].innerHTML;
-    var re = /\u300A(.*)\u300B/; // 格式: 《电影名》
+    var re = /\u300A(.*)\u300B/; // 格式: 《电影名/电影名2/...》
     var m = re.exec(title);
     if (!m) {
         return ;
     }
-    var movie_name = m[1];
-    return movie_name;
+    return m[1].split('/');
 };
 
 getDoubanScore(getMovieName(), insertDoubanScore);
