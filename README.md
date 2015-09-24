@@ -11,10 +11,6 @@ greasemonkey scripts I wrote
 
   display douban score for [cn163.net]() movies
 
-- **next-redirect**
+- **website-redirect**
 
-  auto redirect to product url in [next.36kr.com]()
-
-- **toutiao-redirect**
-
-  auto redirect to product url in [toutiao.io]()
+  auto redirect to target url
