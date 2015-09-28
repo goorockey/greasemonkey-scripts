@@ -5,6 +5,9 @@
 // @include     http://www.xuandy.com/movie/*
 // @include     http://www.xuandy.com/television/*
 // @include     http://www.xuandy.com/video/*
+// @include     http://www.longbl.com/movie/*
+// @include     http://www.longbl.com/television/*
+// @include     http://www.longbl.com/video/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4xuandy.user.js
 // @version     1.1.0
@@ -12,73 +15,80 @@
 // github       github.com/goorockey
 // ==/UserScript==
 
-var douban_search_url = 'https://api.douban.com/v2/movie/search?count=10&q=';
-var douban_movie_url = 'http://movie.douban.com/subject/';
+var DOUBAN_SEARCH_URL = 'https://api.douban.com/v2/movie/search?count=10&q=';
+var DOUBAN_MOVIE_URL = 'http://movie.douban.com/subject/';
 
-var insertDoubanScore = function(douban_data) {
-    if (douban_data === undefined) {
+var getDoubanScore = function (movie_name, callback) {
+  GM_xmlhttpRequest({
+    method: 'GET',
+    headers: { 'Accept': 'application/json' },
+    url: DOUBAN_SEARCH_URL + movie_name,
+    onload: function (res) {
+      if (res.status !== 200) {
         return;
-    }
-
-    var score = douban_data.rating.average;
-    var link = douban_movie_url + douban_data.id;
-
-    var a = document.createElement('a');
-    a.appendChild(document.createTextNode('豆瓣评分: ' + score));
-    a.href = link;
-    a.style.color = 'red';
-    a.style.textDecoration = 'underline';
-
-    document.getElementsByClassName('postmeat')[0].appendChild(a);
-};
-
-var parseDoubanData = function (movie_name, data) {
-    if (!data || !data.subjects) {
-        return ;
-    }
-
-    data = data.subjects;
-    for (var i = 0; i < data.length; i++) {
-        if (data[i].title === movie_name) {
-            return data[i];
+      }
+      try {
+        var data = JSON.parse(res.responseText);
+        if (!data || !data.subjects) {
+          return callback();
         }
-    }
+
+        return callback(data.subjects);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  });
 };
 
-var getDoubanScore = function (movie_names, callback) {
-  var index = 0;
+var insertDataToNode = function(douban_data, targetNode) {
+  if (!douban_data || !targetNode) {
+    return;
+  }
 
-  var doGetDoubanScore = function(movie_name) {
-    if (index >= movie_names.length) {
+  var score = douban_data.rating.average;
+  var link = DOUBAN_MOVIE_URL + douban_data.id;
+
+  var a = document.createElement('a');
+  a.appendChild(document.createTextNode(' (豆瓣评分: ' + score + ')'));
+  a.href = link;
+  a.style.color = 'red';
+  a.style.textDecoration = 'underline';
+
+  targetNode.appendChild(a);
+};
+
+var insertDoubanScore = function(movie_name, parseDoubanData, targetNode) {
+  if (!movie_name) {
+    console.log('No movie name get.')
+    return;
+  }
+
+  if (!targetNode) {
+    console.log('No target node to insert data.');
+    return;
+  }
+
+  getDoubanScore(movie_name, function(data) {
+    if (!data) {
+      console.log('Failed to fetch douban score data.');
       return;
     }
 
-    GM_xmlhttpRequest({
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        },
-        url: douban_search_url + movie_name,
-        onload: function (res) {
-            if (res.status === 200) {
-              try {
-                  var data = JSON.parse(res.responseText);
-                  return callback(parseDoubanData(movie_name, data));
-              } catch (e) {
-                  console.log(e);
-              }
-            }
+    var douban_data = parseDoubanData(data);
+    if (!douban_data) {
+      console.log('Failed to parse douban data.');
+      return;
+    }
 
-            doGetDoubanScore(movie_names[++index]);
-        },
-    });
-  }
-
-  doGetDoubanScore(movie_names[index]);
+    return insertDataToNode(douban_data, targetNode);
+  });
 };
 
+//////////////////////////////////////////////
+
 var getMovieName = function () {
-    var title = document.getElementsByClassName('post') [0].childNodes[1].innerHTML;
+    var title = document.getElementsByClassName('post') [0].childNodes[0].innerHTML;
     var re = /\u300A(.*)\u300B/; // 格式: 《电影名/电影名2/...》
     var m = re.exec(title);
     if (!m) {
@@ -87,4 +97,20 @@ var getMovieName = function () {
     return m[1].split('/');
 };
 
-getDoubanScore(getMovieName(), insertDoubanScore);
+var movie_name = getMovieName();
+
+var parseDoubanData = function (data) {
+    if (!data) {
+        return;
+    }
+
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].title == movie_name) {
+            return data[i];
+        }
+    }
+};
+
+insertDoubanScore(movie_name,
+                  parseDoubanData,
+                  document.getElementsByClassName('postmeat')[0]);

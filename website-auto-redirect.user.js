@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        website-auto-redirect
 // @description auto redirect to article
-// @include     /^http://next.36kr.com/posts/[^\/]*$/
-// @include     /^http://toutiao.io/posts/.*$/
-// @include     /^http://wanqu.co/.+$/
-// @exclude     /^http://wanqu.co/blog/.+$/
+// @include     http://next.36kr.com/posts/*
+// @include     http://toutiao.io/posts/*
+// @include     http://wanqu.co/*
+// @exclude     http://wanqu.co/blog/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @version     1.0
