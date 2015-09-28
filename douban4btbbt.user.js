@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name        douban4cn163
+// @name        douban4btbbt
 // @grant       GM_xmlhttpRequest
-// @description douban score for cn163.net movies
-// @include     http://cn163.net/archives/*
-// @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4cn163.user.js
-// @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4cn163.user.js
-// @version     1.1.0
+// @description douban score for btbbt.cc movie
+// @include     /^http://(www.)*btbbt.cc/thread-.*$/
+// @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
+// @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
+// @version     1.0.0
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
 // ==/UserScript==
@@ -86,39 +86,30 @@ var insertDoubanScore = function(movie_name, parseDoubanData, targetNode) {
 
 //////////////////////////////////////////////
 
-var getMovie = function () {
-  var title = document.getElementsByClassName('entry_title') [0].innerHTML;
-  var re = /(.+)(第.+季)/; // 格式: 电影名第N季/XXXX
-  var m = re.exec(title);
-
-  if (m.length === 3) {
-    var name = m[1];
-    var season = m[2];
-    return {
-      name: name,
-      season: season,
-    };
-  }
+var getMovieName = function () {
+    var title = document.querySelector('#nav td.center span:last-child a').innerHTML;
+    var re = /\[([^\]]*)\]/; // 格式: [电影名/电影名2/...]
+    var m = re.exec(title);
+    if (!m) {
+        return ;
+    }
+    return m[1].split('/')[0];
 };
 
-var movie = getMovie();
-if (!movie) {
-  return;
-}
+var movie_name = getMovieName();
 
 var parseDoubanData = function (data) {
-  if (!data) {
-    return;
-  }
-
-  for (var i = 0; i < data.length; i++) {
-    if (data[i].title.indexOf(movie.name) === 0 &&
-        data[i].title.indexOf(movie.season) !== -1) {
-      return data[i];
+    if (!data) {
+        return;
     }
-  }
+
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].title == movie_name) {
+            return data[i];
+        }
+    }
 };
 
-insertDoubanScore(movie.name,
+insertDoubanScore(movie_name,
                   parseDoubanData,
-                  document.getElementsByClassName('entry_title')[0]);
+                  document.getElementsByClassName('post')[0].children[0]);

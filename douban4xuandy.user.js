@@ -23,8 +23,12 @@ var getDoubanScore = function (movie_name, callback) {
     method: 'GET',
     headers: { 'Accept': 'application/json' },
     url: DOUBAN_SEARCH_URL + movie_name,
+    onerror: function(err) {
+      console.log(err);
+    },
     onload: function (res) {
       if (res.status !== 200) {
+        console.log('Failed to fetch douban api.');
         return;
       }
       try {
@@ -94,7 +98,7 @@ var getMovieName = function () {
     if (!m) {
         return ;
     }
-    return m[1].split('/');
+    return m[1].split('/')[0];
 };
 
 var movie_name = getMovieName();
