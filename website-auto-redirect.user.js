@@ -6,9 +6,10 @@
 // @include     http://wanqu.co/*
 // @exclude     http://wanqu.co/blog/*
 // @include     http://v.opahnet.com/*/v*.html
+// @include     https://www.producthunt.com/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
-// @version     1.1
+// @version     1.2
 // @grant       none
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
@@ -19,6 +20,7 @@ var website_target = {
   'next.36kr.com': '//a[@class="post-url"]/@href',
   'toutiao.io': '//h3[@class="title"]/a[1]/@href',
   'v.opahnet.com': '//a[@class="play_btn"]/@href',
+  'www.producthunt.com': '//a[@class="post-get-it-button--primary"]/@href',
 };
 
 function getUrlByXpath(path) {
