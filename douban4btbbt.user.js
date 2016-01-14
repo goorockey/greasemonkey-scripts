@@ -5,7 +5,7 @@
 // @include     /^http://(www.)*btbbt.cc/thread-.*$/
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
-// @version     1.0.0
+// @version     1.0.1
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
 // ==/UserScript==
@@ -88,13 +88,18 @@ var insertDoubanScore = function(movie_name, parseDoubanData, targetNode) {
 
 var getMovieName = function () {
     var title = document.querySelector('#nav td.center span:last-child a').innerHTML;
-    var re = /\[([^\]]*)\]/; // 格式: [电影名/电影名2/...]
-    var m = re.exec(title);
-    if (!m) {
-        return ;
+    var re = /\[([^\]]*)\]/g; // 格式: [电影名/电影名2/...]
+    while (1) {
+      var m = re.exec(title);
+      if (!m) {
+        break;
+      } 
+
+      if (m[1].indexOf('BT') < 0 || m[1].indexOf('下载') < 0) {
+        return m[1].split('/')[0];
+      }
     }
-    return m[1].split('/')[0];
-};
+}
 
 var movie_name = getMovieName();
 

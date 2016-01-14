@@ -11,6 +11,10 @@ greasemonkey scripts I wrote
 
   display douban score for [cn163.net]() movies
 
+- **douban4btbbt**
+
+  display douban score for [www.btbbt.cc]() movies
+
 - **website-redirect**
 
   auto redirect to target url
