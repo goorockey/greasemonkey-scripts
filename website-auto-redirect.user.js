@@ -9,7 +9,7 @@
 // @include     https://www.producthunt.com/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
-// @version     1.2
+// @version     1.3
 // @grant       none
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
@@ -20,7 +20,7 @@ var website_target = {
   'next.36kr.com': '//a[@class="post-url"]/@href',
   'toutiao.io': '//h3[@class="title"]/a[1]/@href',
   'v.opahnet.com': '//a[@class="play_btn"]/@href',
-  'www.producthunt.com': '//a[@class="post-get-it-button--primary"]/@href',
+  'www.producthunt.com': '//main//a[1]/@href',
 };
 
 function getUrlByXpath(path) {
