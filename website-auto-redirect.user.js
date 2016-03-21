@@ -5,7 +5,7 @@
 // @include     http://toutiao.io/posts/*
 // @include     http://wanqu.co/*
 // @exclude     http://wanqu.co/blog/*
-// @include     http://v.opahnet.com/*/v*.html
+// @include     http://v.videohupu.com/*/v*.html
 // @include     https://www.producthunt.com/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
@@ -19,7 +19,7 @@ var website_target = {
   'wanqu.co': '//a[@rel="external"]/@href',
   'next.36kr.com': '//a[@class="post-url"]/@href',
   'toutiao.io': '//h3[@class="title"]/a[1]/@href',
-  'v.opahnet.com': '//a[@class="play_btn"]/@href',
+  'v.videohupu.com': '//a[@class="play_btn"]/@href',
   'www.producthunt.com': '//main//a[1]/@href',
 };
 
