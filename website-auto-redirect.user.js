@@ -9,7 +9,7 @@
 // @include     https://www.producthunt.com/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
-// @version     1.3
+// @version     1.4
 // @grant       none
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
