@@ -8,9 +8,10 @@
 // @include     http://v.videohupu.com/*/v*.html
 // @include     http://v.liangle.com/*/v*.html
 // @include     https://www.producthunt.com/*
+// @include     http://today.itjuzi.com/product/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
-// @version     1.5
+// @version     1.6
 // @grant       none
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
@@ -23,6 +24,7 @@ var website_target = {
   'v.videohupu.com': '//a[@class="play_btn"]/@href',
   'v.liangle.com': '//a[@class="play_btn"]/@href',
   'www.producthunt.com': '//main//a[1]/@href',
+  'today.itjuzi.com': '//a[@id="today_title"]/@href',
 };
 
 function getUrlByXpath(path) {
