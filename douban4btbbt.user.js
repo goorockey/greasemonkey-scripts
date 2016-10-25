@@ -3,9 +3,10 @@
 // @grant       GM_xmlhttpRequest
 // @description douban score for btbbt.cc movie
 // @include     /^http://(www.)*btbbt.cc/thread-.*$/
+// @include     /^http://(www.)*btbbt.la/thread-.*$/
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/douban4btbbt.user.js
-// @version     1.0.1
+// @version     1.0.2
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
 // ==/UserScript==
