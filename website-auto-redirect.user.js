@@ -11,7 +11,7 @@
 // @include     http://today.itjuzi.com/product/*
 // @downloadURL https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
 // @updateURL   https://raw.githubusercontent.com/goorockey/greasemonkey-scripts/master/website-auto-redirect.user.js
-// @version     1.7
+// @version     1.8
 // @grant       none
 // author       kelvingu616@gmail.com
 // github       github.com/goorockey
@@ -23,7 +23,7 @@ var website_target = {
   'toutiao.io': '//h3[@class="title"]/a[1]/@href',
   'v.videohupu.com': '//a[@class="play_btn"]/@href',
   'v.liangle.com': '//a[@class="play_btn"]/@href',
-  'www.producthunt.com': '//main//a[1]/@href',
+  'www.producthunt.com': '//*[@id="app"]//main//h1//a[1]/@href',
   'today.itjuzi.com': '//a[@id="today_title"]/@href',
 };
 
